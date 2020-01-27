@@ -36,7 +36,7 @@ tar -xf path/to/tvr_feature_release.tar.gz -C data
 You should be able to see `tvr_feature_release` under `data` directory. 
 It contains video features (ResNet, I3D) and text features (subtitle and query, from fine-tuned RoBERTa). 
 Read the code to learn details on how the features are extracted: 
-[video](./utils/video_feature), [text](./utils/text_feature). 
+[video feature extraction](./utils/video_feature), [text feature extraction](./utils/text_feature). 
 
 2. Install dependencies.
 - Python 3.7
@@ -130,7 +130,7 @@ If you find this code useful for your research, please cite our paper:
 ```
 
 ## Acknowledgement
-This work is supported by This research is supported by NSF Awards #1633295, 1562098, 1405822, 
+This research is supported by NSF Awards #1633295, 1562098, 1405822, 
 DARPA MCS Grant #N66001-19-2-4031, DARPA KAIROS Grant #FA8750-19-2-1004, 
 Google Focused Research Award, and ARO-YIP Award #W911NF-18-1-0336.
 
