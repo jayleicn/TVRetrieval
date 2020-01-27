@@ -1,0 +1,61 @@
+
+"""
+{'avg_num_proposals': 158.30197338228544,
+ 'dset_name': 'tvr',
+ 'filename': 'data/retrieval_release_data_with_ids/tvr_val_release.jsonl',
+ 'proposal_config': {'length': 3,
+                     'proposal_interface': 'SlidingWindowMSRSS',
+                     'round_base': 1,
+                     'scales': [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16],
+                     'stride': 0.3},
+ 'recall_metrics': {0.5: 0.8927030563354492, 0.7: 0.6690225005149841},
+ 'total_num_proposals': 344940}
+
+
+{'avg_num_proposals': 213.3295089490592,
+ 'dset_name': 'tvr',
+ 'filename': 'data/retrieval_release_data_with_ids/tvr_val_release.jsonl',
+ 'proposal_config': {'length': 3,
+                     'min_clip_length': 1.5,
+                     'min_proposal_length': 3,
+                     'proposal_interface': 'SlidingWindowMSRSS',
+                     'round_base': 0.5,
+                     'scales': [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16],
+                     'stride': 0.3},
+ 'recall_metrics': {0.5: 0.9612666368484497, 0.7: 0.8215695023536682},
+ 'total_num_proposals': 464845}
+ --
+
+
+{'avg_num_proposals': 213.3295089490592,
+ 'dset_name': 'tvr',
+ 'filename': '../../data/retrieval_release_data_with_ids/tvr_val_release.jsonl',
+ 'proposal_config': {'length': 3,
+                     'proposal_interface': 'SlidingWindowMSRSS',
+                     'round_base': 0.5,
+                     'scales': [1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16],
+                     'stride': 0.3},
+ 'recall_metrics': {0.5: 0.9612666368484497, 0.7: 0.8215695023536682}}
+
+
+{'avg_num_proposals': 263.3845800826067,
+ 'dset_name': 'tvr',
+ 'filename': '../../data/retrieval_release_data_with_ids/tvr_val_release.jsonl',
+ 'proposal_config': {'length': 3,
+                     'proposal_interface': 'SlidingWindowMSRSS',
+                     'round_base': 0.5,
+                     'scales': [0.5, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16],
+                     'stride': 0.3},
+ 'recall_metrics': {0.5: 0.9841211438179016, 0.7: 0.8567232489585876}}
+
+
+{'avg_num_proposals': 242.97246443322626,
+ 'dset_name': 'tvr',
+ 'filename': '../../data/retrieval_release_data_with_ids/tvr_val_release.jsonl',
+ 'proposal_config': {'length': 3,
+                     'proposal_interface': 'SlidingWindowMSRSS',
+                     'round_base': 0.5,
+                     'scales': [0.5, 1, 2, 3, 4, 5, 6, 7, 8],
+                     'stride': 0.3},
+ 'recall_metrics': {0.5: 0.9608076810836792, 0.7: 0.8212941884994507}}
+"""
