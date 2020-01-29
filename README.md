@@ -12,6 +12,18 @@ video (subtitle) moment localization in corpus level.
 ![model_overview](./imgs/model_overview.png)
 
 
+XML achieves high efficiency by applying 1D CNNs on top of query-clip similarity scores, 
+which is obtained from the inner product of independently modeled query and clip representations. 
+Such design gets rid of cumbersome early fusion commonly seen in existing moment localization papers 
+and is thus runs much faster. The learned convolutional filters are also interpretable, where it 
+gives stronger responses on the left edges (START) and right edges (END) of the similarity 
+score curve and thus detect them (see figure below). Interestingly, the learned weights 
+![Conv1D_{st}](https://render.githubusercontent.com/render/math?math=Conv1D_%7Bst%7D) 
+and ![Conv1D_{st}](https://render.githubusercontent.com/render/math?math=Conv1D_%7Bed%7D), 
+as shown in the figure, are similar to the edge detectors in image processing.
+
+![conv_example.png](./imgs/conv_example.png)
+
 ## Resources
 - Data: [TVR dataset](./data/)
 - Website (with leaderboard): [https://tvr.cs.unc.edu/](https://tvr.cs.unc.edu/)
