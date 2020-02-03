@@ -86,11 +86,11 @@ tvr CTX_MODE VID_FEAT_TYPE \
 `VID_FEAT_TYPE` video feature type (resnet, i3d, resnet_i3d). 
 `EXP_ID` is a name string for current run. 
 
-Below is an example of training XML with `video_sub_tef` (video + subtitle + TEF feature), 
+Below is an example of training XML with `video_sub` (video + subtitle), 
 where video feature is `resnet_i3d` (ResNet + I3D):
 ```
 bash baselines/crossmodal_moment_localization/scripts/train.sh \
-tvr video_sub_tef resnet_i3d \
+tvr video_sub resnet_i3d \
 --exp_id test_run
 ```
 This code will load all the data (~60GB) into RAM to speed up training, 
@@ -106,7 +106,7 @@ To train it for only video retrieval, append `--lw_st_ed 0`.
 Training using the above config will stop at around epoch 60, around 4 hours on a single 2080Ti GPU server.
 You should get ~2.6 for VCMR R@1, IoU=0.7 on val set. 
 The resulting model and config will be saved at a dir:
-`baselines/crossmodal_moment_localization/results/tvr-video_sub_tef-test_run-*`.
+`baselines/crossmodal_moment_localization/results/tvr-video_sub-test_run-*`.
 
 2. XML inference
 
@@ -115,12 +115,35 @@ After training, you can inference using the saved model on val or test_public se
 bash baselines/crossmodal_moment_localization/scripts/inference.sh MODEL_DIR_NAME SPLIT_NAME
 ```
 `MODEL_DIR_NAME` is the name of the dir containing the saved model, 
-e.g., `tvr-video_sub_tef-test_run-*`. 
+e.g., `tvr-video_sub-test_run-*`. 
 `SPLIT_NAME` could be `val` or `test_public`. 
 By default, this code evaluates all the 3 tasks (VCMR, SVMR, VR), you can change this behavior 
 by appending option, e.g. `--tasks VCMR VR` where only VCMR and VR are evaluated. 
 The generated predictions will be saved at the same dir as the model, you can evaluate the predictions 
-by following the instructions here [Evaluation and Submission](#Evaluation-and-Submission).
+by following the instructions here [Evaluation and Submission](#Evaluation-and-Submission). 
+
+While the default inference code shown above gives you results without non-maximum suppression (NMS), 
+you can append an additional flag `--nms_thd 0.5` to obtain results with NMS. Most likely you will observe
+a higher R@5 score, but lower R@{10, 100} scores. For the paper, we report results with `--nms_thd 0.5` 
+whenever we see a higher R@5 score on TVR val set.
+The examples below show the performance difference under these two conditions:
+```
+# with NMS (inference using --nms_thd 0.5, which we reported in the paper, last row of Table 7)
+VCMR: {
+    "0.7-r1": 2.62,
+    "0.7-r5": 6.1,
+    "0.7-r10": 8.45,
+    "0.7-r100": 14.86
+}
+
+# without NMS 
+VCMR: {
+    "0.7-r1": 2.62,
+    "0.7-r5": 6.39,
+    "0.7-r10": 9.05,
+    "0.7-r100": 22.47
+}
+``` 
 
 Except for XML model, we also provide our implementation of [CAL](https://arxiv.org/abs/1907.12763), 
 [ExCL](https://arxiv.org/abs/1904.02755) and [MEE](https://arxiv.org/abs/1804.02516). 
