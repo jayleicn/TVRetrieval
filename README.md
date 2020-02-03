@@ -125,11 +125,15 @@ by following the instructions here [Evaluation and Submission](#Evaluation-and-S
 While the default inference code shown above gives you results without non-maximum suppression (NMS), 
 you can append an additional flag `--nms_thd 0.5` to obtain results with NMS. Most likely you will observe
 a higher R@5 score, but lower R@{10, 100} scores. For the paper, we report results with `--nms_thd 0.5` 
-whenever we see a higher R@5 score on TVR val set.
+whenever we see a higher R@5 IoU=0.5 score on TVR val set. This strategy might not be optimal.
 The examples below show the performance difference under these two conditions:
 ```
 # with NMS (inference using --nms_thd 0.5, which we reported in the paper, last row of Table 7)
 VCMR: {
+    "0.5-r1": 5.28,
+    "0.5-r5": 12.77,
+    "0.5-r10": 17.59,
+    "0.5-r100": 30.22,
     "0.7-r1": 2.62,
     "0.7-r5": 6.1,
     "0.7-r10": 8.45,
@@ -138,6 +142,10 @@ VCMR: {
 
 # without NMS 
 VCMR: {
+    "0.5-r1": 5.28,
+    "0.5-r5": 11.73,
+    "0.5-r10": 15.9,
+    "0.5-r100": 36.16,
     "0.7-r1": 2.62,
     "0.7-r5": 6.39,
     "0.7-r10": 9.05,
