@@ -28,7 +28,8 @@ as shown in the figure, are similar to the edge detectors in image processing.
 - Data: [TVR dataset](./data/)
 - Website (with leaderboard): [https://tvr.cs.unc.edu/](https://tvr.cs.unc.edu/)
 - Submission: [codalab evaluation server](https://competitions.codalab.org/competitions/22780)
-- Related works: [TVC](https://github.com/jayleicn/TVCaption), [TVQA](https://github.com/jayleicn/TVQA), [TVQA+](https://github.com/jayleicn/TVQAplus)
+- Related works: [TVC (Video Captioning)](https://github.com/jayleicn/TVCaption), [TVQA (Localized VideoQA)](https://github.com/jayleicn/TVQA), [TVQA+ (Grounded VideoQA)](https://github.com/jayleicn/TVQAplus)
+
 
 ## Getting started
 ### Prerequisites
