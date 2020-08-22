@@ -30,7 +30,7 @@ named TV show Caption (TVC).
 
 ### TVR Task
 ![model_overview](./imgs/tvr_task_example.png)
-A TVR example in the Corpus level moment retrieval task. Ground truth moment is shown in
+A TVR example in the corpus level moment retrieval task. Ground truth moment is shown in
 green box. Colors in the query indicate whether the words are related to video
 (blue) or subtitle (magenta) or both (black). To better retrieve relevant moments
 from the video corpus, a system needs to comprehend both videos and subtitles
@@ -182,9 +182,9 @@ This code borrowed components from the following projects:
 [transformers](https://github.com/huggingface/transformers),
 [TVQAplus](https://github.com/jayleicn/TVQAplus),
 [TVQA](https://github.com/jayleicn/TVQA), 
-[MEE](https://github.com/antoine77340/Mixture-of-Embedding-Experts). 
-We thank the authors for open-sourcing these great projects! 
-In addition, we also thank [Victor Escorcia](https://escorciav.github.io/) for his kind help on explaining CAL's implementation details.
+[MEE](https://github.com/antoine77340/Mixture-of-Embedding-Experts), 
+we thank the authors for open-sourcing these great projects! 
+We also thank [Victor Escorcia](https://escorciav.github.io/) for his kind help on explaining CAL's implementation details.
 
 ## Contact
 jielei [at] cs.unc.edu
