@@ -9,20 +9,43 @@ video (subtitle) moment localization in corpus level.
 [Tamara L. Berg](http://tamaraberg.com/), [Mohit Bansal](http://www.cs.unc.edu/~mbansal/)
 
 
+We introduce TV show Retrieval (TVR), a new multimodal
+retrieval dataset. TVR requires systems to understand both videos and
+their associated subtitle (dialogue) texts, making it more realistic. The
+dataset contains 109K queries collected on 21.8K videos from 6 TV
+shows of diverse genres, where each query is associated with a tight
+temporal window. The queries are also labeled with query types that
+indicate whether each of them is more related to video or subtitle or both,
+allowing for in-depth analysis of the dataset and the methods that built
+on top of it. Strict qualification and post-annotation verification tests are
+applied to ensure the quality of the collected data. Further, we present
+several baselines and a novel Cross-modal Moment Localization (XML)
+network for multimodal moment retrieval tasks. The proposed XML
+model uses a late fusion design with a novel Convolutional Start-End
+detector (ConvSE), surpassing baselines by a large margin and with
+better efficiency, providing a strong starting point for future work. We
+have also collected additional descriptions for each annotated moment in
+TVR to form a new multimodal captioning dataset with 262K captions,
+named TV show Caption (TVC).
+
+### TVR Task
+![model_overview](./imgs/tvr_task_example.png)
+A TVR example in the Corpus level moment retrieval task. Ground truth moment is shown in
+green box. Colors in the query indicate whether the words are related to video
+(blue) or subtitle (magenta) or both (black). To better retrieve relevant moments
+from the video corpus, a system needs to comprehend both videos and subtitles
+
+### Method - Cross-modal Moment Localization (XML)
 ![model_overview](./imgs/model_overview.png)
+XML is an efficient method for moment retrieval at a large video corpus. 
+It performs video retrieval in its shallower layers and more fine-grained moment 
+retrieval in its deeper layers. It uses a late fusion design with a novel 
+Convolutional Start-End (ConvSE) detector, making the moment predictions efficient and accurate.
+The ConvSe module is inspired by edge detectors in image
+processing. It learns to detect start (up) and end (down) edges in the 1D query-clip similarity 
+signals with two trainable 1D convolution filters, and is the core of XML's high accuracy 
+and efficiency.
 
-
-XML achieves high efficiency by applying 1D CNNs on top of query-clip similarity scores, 
-which is obtained from the inner product of independently modeled query and clip representations. 
-Such design gets rid of cumbersome early fusion commonly seen in existing moment localization papers 
-and is thus runs much faster. The learned convolutional filters are also interpretable, where it 
-gives stronger responses on the left edges (START) and right edges (END) of the similarity 
-score curve and thus detect them (see figure below). Interestingly, the learned weights 
-![Conv1D_{st}](https://render.githubusercontent.com/render/math?math=Conv1D_%7Bst%7D) 
-and ![Conv1D_{st}](https://render.githubusercontent.com/render/math?math=Conv1D_%7Bed%7D), 
-as shown in the figure, are similar to the edge detectors in image processing.
-
-![conv_example.png](./imgs/conv_example.png)
 
 ## Resources
 - Data: [TVR dataset](./data/)
@@ -104,7 +127,7 @@ and moment localization loss ![L^{svmr}](https://render.githubusercontent.com/re
 To train it for only the moment localization, append `--lw_neg_q 0 --lw_neg_ctx 0`.
 To train it for only video retrieval, append `--lw_st_ed 0`. 
 
-Training using the above config will stop at around epoch 60, around 4 hours on a single 2080Ti GPU server.
+Training using the above config will stop at around epoch 60, around 4 hours with a single 2080Ti GPU.
 You should get ~2.6 for VCMR R@1, IoU=0.7 on val set. 
 The resulting model and config will be saved at a dir:
 `baselines/crossmodal_moment_localization/results/tvr-video_sub-test_run-*`.
@@ -125,40 +148,19 @@ by following the instructions here [Evaluation and Submission](#Evaluation-and-S
 
 While the default inference code shown above gives you results without non-maximum suppression (NMS), 
 you can append an additional flag `--nms_thd 0.5` to obtain results with NMS. Most likely you will observe
-a higher R@5 score, but lower R@{10, 100} scores. For the paper, we report results with `--nms_thd 0.5` 
-whenever we see a higher R@5 IoU=0.5 score on TVR val set. This strategy might not be optimal.
-The examples below show the performance difference under these two conditions:
-```
-# with NMS (inference using --nms_thd 0.5, which we reported in the paper, last row of Table 7)
-VCMR: {
-    "0.5-r1": 5.28,
-    "0.5-r5": 12.77,
-    "0.5-r10": 17.59,
-    "0.5-r100": 30.22,
-    "0.7-r1": 2.62,
-    "0.7-r5": 6.1,
-    "0.7-r10": 8.45,
-    "0.7-r100": 14.86
-}
+a higher R@5 score, but lower R@{10, 100} scores. For the results reported in the paper, 
+we do not use NMS. 
 
-# without NMS 
-VCMR: {
-    "0.5-r1": 5.28,
-    "0.5-r5": 11.73,
-    "0.5-r10": 15.9,
-    "0.5-r100": 36.16,
-    "0.7-r1": 2.62,
-    "0.7-r5": 6.39,
-    "0.7-r10": 9.05,
-    "0.7-r100": 22.47
-}
-``` 
+### Other baselines
 
 Except for XML model, we also provide our implementation of [CAL](https://arxiv.org/abs/1907.12763), 
-[ExCL](https://arxiv.org/abs/1904.02755) and [MEE](https://arxiv.org/abs/1804.02516). 
+[ExCL](https://arxiv.org/abs/1904.02755) and [MEE](https://arxiv.org/abs/1804.02516) at [TVRetrieval/baselines](./baselines). 
 Their training, inference and evaluation is similar to XML. 
 
 ### Evaluation and Submission
+
+We only release ground-truth for train and val splits, to get results on test-public split, 
+please submit your results follow the instructions here:
 [standalone_eval/README.md](standalone_eval/README.md)
 
 
@@ -168,20 +170,21 @@ If you find this code useful for your research, please cite our paper:
 @inproceedings{lei2020tvr,
   title={TVR: A Large-Scale Dataset for Video-Subtitle Moment Retrieval},
   author={Lei, Jie and Yu, Licheng and Berg, Tamara L and Bansal, Mohit},
-  booktitle={Tech Report},
+  booktitle={ECCV},
   year={2020}
 }
 ```
 
 ## Acknowledgement
-This research is supported by NSF Awards #1633295, 1562098, 1405822, 
-DARPA MCS Grant #N66001-19-2-4031, DARPA KAIROS Grant #FA8750-19-2-1004, 
-Google Focused Research Award, and ARO-YIP Award #W911NF-18-1-0336.
+This research is supported by grants and awards from NSF, DARPA, ARO and Google.
 
-This code is partly inspired by the following projects: 
+This code borrowed components from the following projects: 
 [transformers](https://github.com/huggingface/transformers),
 [TVQAplus](https://github.com/jayleicn/TVQAplus),
-[TVQA](https://github.com/jayleicn/TVQA).
+[TVQA](https://github.com/jayleicn/TVQA), 
+[MEE](https://github.com/antoine77340/Mixture-of-Embedding-Experts). 
+We thank the authors for open-sourcing these great projects! 
+In addition, we also thank [Victor Escorcia](https://escorciav.github.io/) for his kind help on explaining CAL's implementation details.
 
 ## Contact
 jielei [at] cs.unc.edu
