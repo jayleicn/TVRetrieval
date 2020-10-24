@@ -238,7 +238,8 @@ class StartEndEvalDataset(Dataset):
 
     def load_gt_vid_name_for_query(self, load_gt_video):
         """load_gt_video: bool, affect the returned value of self._get_item_query"""
-        assert "vid_name" in self.query_data[0]
+        if load_gt_video:
+            assert "vid_name" in self.query_data[0]
         self.load_gt_video = load_gt_video
 
     def __len__(self):

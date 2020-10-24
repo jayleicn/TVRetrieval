@@ -491,14 +491,18 @@ def eval_epoch(model, eval_dataset, opt, save_submission_filename,
     eval_submission = get_submission_top_n(eval_submission_raw, top_n=max_after_nms)
     save_json(eval_submission, submission_path)
 
-    metrics = eval_retrieval(eval_submission, eval_dataset.query_data,
-                             iou_thds=IOU_THDS, match_number=not opt.debug, verbose=opt.debug,
-                             use_desc_type=opt.dset_name == "tvr")
+    if opt.eval_split_name == "val":  # since test_public has no GT
+        metrics = eval_retrieval(eval_submission, eval_dataset.query_data,
+                                 iou_thds=IOU_THDS, match_number=not opt.debug, verbose=opt.debug,
+                                 use_desc_type=opt.dset_name == "tvr")
+        save_metrics_path = submission_path.replace(".json", "_metrics.json")
+        save_json(metrics, save_metrics_path, save_pretty=True, sort_keys=False)
+        latest_file_paths = [submission_path, save_metrics_path]
+    else:
+        metrics = None
+        latest_file_paths = [submission_path, ]
     # metrics["time_avg"] = float(times.mean())
     # metrics["time_std"] = float(times.std())
-    save_metrics_path = submission_path.replace(".json", "_metrics.json")
-    save_json(metrics, save_metrics_path, save_pretty=True, sort_keys=False)
-    latest_file_paths = [submission_path, save_metrics_path]
 
     if opt.nms_thd != -1:
         logger.info("Performing nms with nms_thd {}".format(opt.nms_thd))
@@ -513,11 +517,15 @@ def eval_epoch(model, eval_dataset, opt, save_submission_filename,
         logger.info("Saving/Evaluating nms results")
         submission_nms_path = submission_path.replace(".json", "_nms_thd_{}.json".format(opt.nms_thd))
         save_json(eval_submission_after_nms, submission_nms_path)
-        metrics_nms = eval_retrieval(eval_submission_after_nms, eval_dataset.query_data,
-                                     iou_thds=IOU_THDS, match_number=not opt.debug, verbose=opt.debug)
-        save_metrics_nms_path = submission_nms_path.replace(".json", "_metrics.json")
-        save_json(metrics_nms, save_metrics_nms_path, save_pretty=True, sort_keys=False)
-        latest_file_paths += [submission_nms_path, save_metrics_nms_path]
+        if opt.eval_split_name == "val":
+            metrics_nms = eval_retrieval(eval_submission_after_nms, eval_dataset.query_data,
+                                         iou_thds=IOU_THDS, match_number=not opt.debug, verbose=opt.debug)
+            save_metrics_nms_path = submission_nms_path.replace(".json", "_metrics.json")
+            save_json(metrics_nms, save_metrics_nms_path, save_pretty=True, sort_keys=False)
+            latest_file_paths += [submission_nms_path, save_metrics_nms_path]
+        else:
+            metrics_nms = None
+            latest_file_paths = [submission_nms_path, ]
     else:
         metrics_nms = None
     return metrics, metrics_nms, latest_file_paths
