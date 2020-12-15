@@ -171,8 +171,7 @@ def train(model, train_dataset, train_eval_dataset, val_dataset, opt):
         "latest_{}_{}_predictions_{}.json".format(opt.dset_name, opt.eval_split_name, "_".join(eval_tasks_at_training))
     for epoch_i in trange(start_epoch, opt.n_epoch, desc="Epoch"):
         if epoch_i > -1:
-            with torch.autograd.detect_anomaly():
-                train_epoch(model, train_loader, optimizer, opt, epoch_i, training=True)
+            train_epoch(model, train_loader, optimizer, opt, epoch_i, training=True)
         # TODO: continue from here.
         global_step = (epoch_i + 1) * len(train_loader)
         if opt.eval_path is not None:
