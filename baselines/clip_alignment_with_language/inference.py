@@ -259,7 +259,7 @@ def post_processing_svmr_nms(svmr_res, nms_thd=0.6, max_before_nms=1000, max_aft
         _predictions = [d[1:] for d in e["predictions"][:max_before_nms]]
         _predictions = temporal_non_maximum_suppression(
             _predictions, nms_threshold=nms_thd)[:max_after_nms]
-        _video_id = e["predictions"][0] # video_id is the same for all predictions
+        _video_id = e["predictions"][0][0] # video_id is the same for all predictions
         e["predictions"] = [[_video_id, ] + d for d in _predictions]
         processed_svmr_res.append(e)
     return processed_svmr_res
