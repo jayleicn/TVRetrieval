@@ -16,4 +16,4 @@ python utils/text_feature/convert_sub_feature_word_to_clip.py \
 --tgt_h5_file ${sub_clip_h5_file} \
 --sub_meta_path ${sub_meta_path} \
 --vid_clip_h5_file ${vid_clip_h5_file} \
-${@:3}
+${@:6}
