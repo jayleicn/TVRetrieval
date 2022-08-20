@@ -101,7 +101,7 @@ Its content should be similar if not the same as `sample_val_predictions_metrics
 ### Codalab Submission
 To test your model's performance on `test-public` set, 
 please submit both `val` and `test-public` predictions to our 
-[Codalab evaluation server](https://competitions.codalab.org/competitions/22780). 
+[Codalab evaluation server](https://codalab.lisn.upsaclay.fr/competitions/6975). 
 The submission file should be a single `.zip ` file (no enclosing folder) 
 that contains the two prediction files 
 `tvr_test_public_submission.json` and `tvr_val_submission.json`, each of the `*submission.json` file 
